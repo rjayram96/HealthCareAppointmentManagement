@@ -1,0 +1,5 @@
+Database name : healthcare
+Table name : appointments
+
+quary : 
+create table appointments( appId int AUTO_INCREMENT primary key, appNo varchar(20), appDate varchar(20), appType varchar(20), appDesc varchar(30), docName varchar(30), hospName varchar(30), patientName varchar(30) );
