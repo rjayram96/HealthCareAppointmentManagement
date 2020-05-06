@@ -10,18 +10,7 @@ $(document).ready(function()
 //SAVE ============================================
 $(document).on("click", "#btnSave", function(event)
 {
-	var type = ($("#hidItemIDSave").val() == "") ? "POST" : "PUT";
-	$.ajax(
-	{
-		 url : "ItemsAPI",
-		 type : type,
-		 data : $("#formItem").serialize(),
-		 dataType : "text",
-		 complete : function(response, status)
-		 {
-			 onItemSaveComplete(response.responseText, status);
-		 }
-	});
+	
 		
 	// Clear alerts---------------------
 	 $("#alertSuccess").text("");
@@ -41,61 +30,75 @@ $(document).on("click", "#btnSave", function(event)
 	 // If valid-------------------------
 	  $("#formItem").submit();
   
-  
+	  var type = ($("#hidItemIDSave").val() == "") ? "POST" : "PUT";
+		$.ajax(
+		{
+			 url : "AppointmentsAPI",
+			 type : type,
+			 data : $("#formItem").serialize(),
+			 dataType : "text",
+			 complete : function(response, status)
+			 {
+				 onItemSaveComplete(response.responseText, status);
+			 }
+		});
  });
 
 //UPDATE==========================================
 $(document).on("click", ".btnUpdate", function(event)
 {
 	 $("#hidItemIDSave").val($(this).closest("tr").find('#hidItemIDUpdate').val());
-	 $("#itemCode").val($(this).closest("tr").find('td:eq(0)').text());
-	 $("#itemName").val($(this).closest("tr").find('td:eq(1)').text());
-	 $("#itemPrice").val($(this).closest("tr").find('td:eq(2)').text());
-	 $("#itemDesc").val($(this).closest("tr").find('td:eq(3)').text());
+	 $("#appNo").val($(this).closest("tr").find('td:eq(0)').text());
+	 $("#appDate").val($(this).closest("tr").find('td:eq(1)').text());
+	 $("#appType").val($(this).closest("tr").find('td:eq(2)').text());
+	 $("#appDesc").val($(this).closest("tr").find('td:eq(3)').text());
+	 $("#docName").val($(this).closest("tr").find('td:eq(4)').text());
+	 $("#hospName").val($(this).closest("tr").find('td:eq(5)').text());
+	 $("#patientName").val($(this).closest("tr").find('td:eq(6)').text());
 });
 
 //CLIENT-MODEL================================================================
 function validateItemForm()
 {
-	// CODE
-	if ($("#itemCode").val().trim() == "")
+	
+	if ($("#appNo").val().trim() == "")
 	 {
-		return "Insert Item Code.";
+		return "Insert appointment no.";
 	 }
 	
-	// NAME
-	if ($("#itemName").val().trim() == "")
+	if ($("#appDate").val().trim() == "")
 	 {
-		return "Insert Item Name.";
+		return "Insert date.";
 	 }
 	
-	// PRICE-------------------------------
-	if ($("#itemPrice").val().trim() == "")
+	if ($("#appType").val().trim() == "")
 	 {
-		return "Insert Item Price.";
+		return "Insert type.";
 	 }
 	
-	// is numerical value
-	var tmpPrice = $("#itemPrice").val().trim();
-	if (!$.isNumeric(tmpPrice))
+	if ($("#appDesc").val().trim() == "")
 	 {
-		return "Insert a numerical value for Item Price.";
+		return "Insert appointment description.";
 	 }
 	
-	// convert to decimal price
-	 $("#itemPrice").val(parseFloat(tmpPrice).toFixed(2));
-	 
-	// DESCRIPTION------------------------
-	if ($("#itemDesc").val().trim() == "")
+	if ($("#docName").val().trim() == "")
 	 {
-		return "Insert Item Description.";
+		return "Insert doctor name.";
 	 }
+	
+	if ($("#hospName").val().trim() == "")
+	 {
+		return "Insert hospital name.";
+	 }
+	
+	if ($("#patientName").val().trim() == "")
+	 {
+		return "Insert patient name.";
+	 }
+	
 	
 	return true;
 }
-
-
-
 
 function onItemSaveComplete(response, status)
 {
@@ -112,28 +115,28 @@ function onItemSaveComplete(response, status)
 			 $("#alertError").text(resultSet.data);
 			 $("#alertError").show();
 		 }
-		 } else if (status == "error")
-		 {
-			 $("#alertError").text("Error while saving.");
-			 $("#alertError").show();
-		 } else
-		 {
-			 $("#alertError").text("Unknown error while saving..");
-			 $("#alertError").show();
-		 }
-		 $("#hidItemIDSave").val("");
-		 $("#formItem")[0].reset();
-	}
+	 } else if (status == "error")
+	 {
+		 $("#alertError").text("Error while saving.");
+		 $("#alertError").show();
+	 } else
+	 {
+		 $("#alertError").text("Unknown error while saving..");
+		 $("#alertError").show();
+	 }
+	 $("#hidItemIDSave").val("");
+	 $("#formItem")[0].reset();
+}
 
-	$(document).on("click", ".btnRemove", function(event)
-	{
-		 $.ajax(
-		 {
-			 url : "ItemsAPI",
-			 type : "DELETE",
-			 data : "itemID=" + $(this).data("itemid"),
-			 dataType : "text",
-			 complete : function(response, status)
+$(document).on("click", ".btnRemove", function(event)
+{
+	 $.ajax(
+	 {
+		 url : "AppointmentsAPI",
+		 type : "DELETE",
+		 data : "appId=3",
+		 dataType : "text",
+		 complete : function(response, status)
 		 {
 			 onItemDeleteComplete(response.responseText, status);
 		 }
