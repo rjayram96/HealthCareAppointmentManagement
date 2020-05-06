@@ -31,6 +31,27 @@ public class AppointmentsAPI extends HttpServlet
 		response.getWriter().write(output);
 	}
 	
+	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		 Map paras = getParasMap(request);
+		 String output = itemObj.updateAppointment(paras.get("hidItemIDSave").toString(),
+		 paras.get("appNo").toString(),
+		 paras.get("appDate").toString(),
+		 paras.get("appType").toString(),
+		 paras.get("appDesc").toString(),
+		 paras.get("docName").toString(),
+		 paras.get("hospName").toString(),
+		 paras.get("patientName").toString());
+		 response.getWriter().write(output);
+	}
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+	{
+		 Map paras = getParasMap(request);
+		 String output = itemObj.deleteAppointment((String) paras.get("appId"));
+		 response.getWriter().write(output);
+	}
+	
 	// Convert request parameters to a Map
 	private static Map getParasMap(HttpServletRequest request)
 	{
@@ -52,26 +73,4 @@ public class AppointmentsAPI extends HttpServlet
 		 return map;
 		
 	 }
-	
-	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		 Map paras = getParasMap(request);
-		 String output = itemObj.updateAppointment(paras.get("hidItemIDSave").toString(),
-		 paras.get("appNo").toString(),
-		 paras.get("appDate").toString(),
-		 paras.get("appType").toString(),
-		 paras.get("appDesc").toString(),
-		 paras.get("docName").toString(),
-		 paras.get("hospName").toString(),
-		 paras.get("patientName").toString());
-		 response.getWriter().write(output);
-	}
-	
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
-		 Map paras = getParasMap(request);
-		 String output = itemObj.deleteAppointment(paras.get("appId").toString());
-		 response.getWriter().write(output);
-	}
-	
 }

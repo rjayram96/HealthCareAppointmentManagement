@@ -134,7 +134,7 @@ $(document).on("click", ".btnRemove", function(event)
 	 {
 		 url : "AppointmentsAPI",
 		 type : "DELETE",
-		 data : "appId=3",
+		 data : "appId=" + $(this).data("appId"),
 		 dataType : "text",
 		 complete : function(response, status)
 		 {
