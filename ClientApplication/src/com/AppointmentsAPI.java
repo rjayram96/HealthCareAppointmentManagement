@@ -48,7 +48,7 @@ public class AppointmentsAPI extends HttpServlet
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		 Map paras = getParasMap(request);
-		 String output = itemObj.deleteAppointment((String) paras.get("appId"));
+		 String output = itemObj.deleteAppointment(paras.get("appid").toString());
 		 response.getWriter().write(output);
 	}
 	

@@ -7,11 +7,38 @@ $(document).ready(function()
 	 $("#alertError").hide();
 });
 
+function onItemSaveComplete(response, status)
+{
+	if (status == "success")
+	 {
+		 var resultSet = JSON.parse(response);
+		 if (resultSet.status.trim() == "success")
+		 {
+		 $("#alertSuccess").text("Successfully saved.");
+		 $("#alertSuccess").show();
+		 $("#divItemsGrid").html(resultSet.data);
+		 } else if (resultSet.status.trim() == "error")
+		 {
+			 $("#alertError").text(resultSet.data);
+			 $("#alertError").show();
+		 }
+	 } else if (status == "error")
+	 {
+		 $("#alertError").text("Error while saving.");
+		 $("#alertError").show();
+	 } else
+	 {
+		 $("#alertError").text("Unknown error while saving..");
+		 $("#alertError").show();
+	 }
+	 $("#hidItemIDSave").val("");
+	 $("#formItem")[0].reset();
+}
+
 //SAVE ============================================
 $(document).on("click", "#btnSave", function(event)
 {
 	
-		
 	// Clear alerts---------------------
 	 $("#alertSuccess").text("");
 	 $("#alertSuccess").hide();
@@ -26,23 +53,26 @@ $(document).on("click", "#btnSave", function(event)
 		  $("#alertError").show();
 		  return;
 	  }
+ 
 	 
-	 // If valid-------------------------
-	  $("#formItem").submit();
-  
-	  var type = ($("#hidItemIDSave").val() == "") ? "POST" : "PUT";
-		$.ajax(
-		{
-			 url : "AppointmentsAPI",
-			 type : type,
-			 data : $("#formItem").serialize(),
-			 dataType : "text",
-			 complete : function(response, status)
-			 {
-				 onItemSaveComplete(response.responseText, status);
-			 }
-		});
+	var type = ($("#hidItemIDSave").val() == "") ? "POST" : "PUT";
+	$.ajax(
+	{
+		 url : "AppointmentsAPI",
+		 type : type,
+		 data : $("#formItem").serialize(),
+		 dataType : "text",
+		 complete : function(response, status)
+		 {
+			 onItemSaveComplete(response.responseText, status);
+		 }
+	});
+		
+	
+	  
  });
+
+
 
 //UPDATE==========================================
 $(document).on("click", ".btnUpdate", function(event)
@@ -100,48 +130,6 @@ function validateItemForm()
 	return true;
 }
 
-function onItemSaveComplete(response, status)
-{
-	if (status == "success")
-	 {
-		 var resultSet = JSON.parse(response);
-		 if (resultSet.status.trim() == "success")
-		 {
-		 $("#alertSuccess").text("Successfully saved.");
-		 $("#alertSuccess").show();
-		 $("#divItemsGrid").html(resultSet.data);
-		 } else if (resultSet.status.trim() == "error")
-		 {
-			 $("#alertError").text(resultSet.data);
-			 $("#alertError").show();
-		 }
-	 } else if (status == "error")
-	 {
-		 $("#alertError").text("Error while saving.");
-		 $("#alertError").show();
-	 } else
-	 {
-		 $("#alertError").text("Unknown error while saving..");
-		 $("#alertError").show();
-	 }
-	 $("#hidItemIDSave").val("");
-	 $("#formItem")[0].reset();
-}
-
-$(document).on("click", ".btnRemove", function(event)
-{
-	 $.ajax(
-	 {
-		 url : "AppointmentsAPI",
-		 type : "DELETE",
-		 data : "appId=" + $(this).data("appId"),
-		 dataType : "text",
-		 complete : function(response, status)
-		 {
-			 onItemDeleteComplete(response.responseText, status);
-		 }
-	 });
-});
 
 function onItemDeleteComplete(response, status)
 {
@@ -169,3 +157,19 @@ function onItemDeleteComplete(response, status)
 	 }
 	 
 }
+
+$(document).on("click", ".btnRemove", function(event)
+{
+	 $.ajax(
+	 {
+		 url : "AppointmentsAPI",
+		 type : "DELETE",
+		 data : "appid=" + $(this).data("appid"),
+		 dataType : "text",
+		 complete : function(response, status)
+		 {
+			 onItemDeleteComplete(response.responseText, status);
+		 }
+	 });
+});
+

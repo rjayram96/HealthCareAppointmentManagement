@@ -93,8 +93,8 @@ public class Appointment
 				output += "<td>" + hospName + "</td>";
 				output += "<td>" + patientName + "</td>";
 				output += "<td><input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-secondary'></td>"
-						 + "<td><input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-itemid='"
-						 + rs.getInt("appId") + "'>" + "</td></tr>";
+						 + "<td><input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger' data-appid='"
+						 + appId + "'></td></tr>";
 			}
 			con.close();
 			// Complete the html table
